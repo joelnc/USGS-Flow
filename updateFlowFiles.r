@@ -1,42 +1,246 @@
-######################### CLEAR STUFF ##########################################
+######################### CLEAR STUFF #######################################
 rm(list=ls())
 graphics.off()
 library("EGRET")
 library("dataRetrieval")
 
-################################################################################
-######################### Sites DF  ############################################
+#############################################################################
+######################### Sites DF  #########################################
 
-#################### MC38 McAlpine Upper 02146600 (R) ##########################
-
+#################### MC38 McAlpine Upper 02146600 (R) #######################
 ## High res recent data
 siteNumber <- "02146600"
 QParameterCd <- "00060"
 StartDate <- "2007-10-01"
 ##EndDate <- "2012-09-30"
-dataData <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+MC38NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
                        startDate=StartDate, tz="America/New_York")
 
-##Daily <- readNWISDaily(siteNumber, QParameterCd, startDate=StartDate, endDate="")
-INFO <- readNWISInfo(siteNumber, parameterCd="00060")
+MC38NWIS <- MC38NWIS[,1:6]
+names(MC38NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 
-data2 <- dataData[,1:6]
+load("rdata/siteMC38_ida.Rdata")
+
+mc38Flow <- rbind(siteMC38[,c("dt", "cfs")],
+              MC38NWIS[,c("dt","cfs")])
+
+save(mc38Flow, file="rdata/mc38Flow.Rdata")
+
+##load("rdata/mc38Flow.Rdata")
+##plot(mc38Flow$dt, mc38Flow$cfs, pch=16)
+
+#################### MC45 McAlpine Lower 02146750 ###########################
+rm(list=ls())
+## High res recent data
+siteNumber <- "02146750"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC45NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC45NWIS <- MC45NWIS[,1:6]
+names(MC45NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 
 load("rdata/siteMC45_ida.Rdata")
 
-names(data2) <- c("ag", "site", "DT", "cfs", "cfsCd", "TZ")
+mc45Flow <- rbind(siteMC45[,c("dt", "cfs")],
+              MC45NWIS[,c("dt","cfs")])
+
+save(mc45Flow, file="rdata/mc45Flow.Rdata")
+
+##load("rdata/mc45Flow.Rdata")
+##plot(mc45Flow$dt, mc45Flow$cfs, pch=16, log="y")
+
+#################### MC42 McAlpine Lower 02146700 ###########################
+rm(list=ls())
+## High res recent data
+siteNumber <- "02146700"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC42NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC42NWIS <- MC42NWIS[,1:6]
+names(MC42NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC42_ida.Rdata")
+
+mc42Flow <- rbind(siteMC42[,c("dt", "cfs")],
+              MC42NWIS[,c("dt","cfs")])
+
+save(mc42Flow, file="rdata/mc42Flow.Rdata")
+
+##load("rdata/mc42Flow.Rdata")
+##plot(mc42Flow$dt, mc42Flow$cfs, pch=16, log="y")
+
+#################### MC14A Long Creek 214291555 ########################
+rm(list=ls())
+## High res recent data
+siteNumber <- "0214291555"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC14ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC14ANWIS <- MC14ANWIS[,1:6]
+names(MC14ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC14A_ida.Rdata")
+
+mc14AFlow <- rbind(siteMC14A[,c("dt", "cfs")],
+              MC14ANWIS[,c("dt","cfs")])
+
+save(mc14AFlow, file="rdata/mc14AFlow.Rdata")
+
+##load("rdata/mc14AFlow.Rdata")
+##plot(mc14AFlow$dt, mc14AFlow$cfs, pch=16, log="y")
+
+#################### MC22A Irwin 02146300 ########################
+rm(list=ls())
+## High res recent data
+siteNumber <- "02146300"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC22ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC22ANWIS <- MC22ANWIS[,1:6]
+names(MC22ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC22A_ida.Rdata")
+
+mc22AFlow <- rbind(siteMC22A[,c("dt", "cfs")],
+              MC22ANWIS[,c("dt","cfs")])
+
+save(mc22AFlow, file="rdata/mc22AFlow.Rdata")
+
+##load("rdata/mc22AFlow.Rdata")
+##plot(mc22AFlow$dt, mc22AFlow$cfs, pch=16, log="y")
+
+#################### MC45B McAlpine SC 0214676115 ########################
+rm(list=ls())
+## High res recent data
+siteNumber <- "0214676115"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC45BNWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC45BNWIS <- MC45BNWIS[,1:6]
+names(MC45BNWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC45B_ida.Rdata")
+
+mc45BFlow <- rbind(siteMC45B[,c("dt", "cfs")],
+              MC45BNWIS[,c("dt","cfs")])
+
+save(mc45BFlow, file="rdata/mc45BFlow.Rdata")
+
+##load("rdata/mc45BFlow.Rdata")
+##plot(mc45BFlow$dt, mc45BFlow$cfs, pch=16, log="y")
+
+#################### MC49A LSC 02146530 ##################################
+rm(list=ls())
+## High res recent data
+siteNumber <- "02146530"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC49ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC49ANWIS <- MC49ANWIS[,1:6]
+names(MC49ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC49A_ida.Rdata")
+
+mc49AFlow <- rbind(siteMC49A[,c("dt", "cfs")],
+              MC49ANWIS[,c("dt","cfs")])
+
+save(mc49AFlow, file="rdata/mc49AFlow.Rdata")
+
+##load("rdata/mc49AFlow.Rdata")
+##plot(mc49AFlow$dt, mc49AFlow$cfs, pch=16, log="y")
+
+#################### MC27 Sugar Creek 02146381 ###########################
+rm(list=ls())
+## High res recent data
+siteNumber <- "02146381"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC27NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC27NWIS <- MC27NWIS[,1:6]
+names(MC27NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC27_ida.Rdata")
+
+mc27Flow <- rbind(siteMC27[,c("dt", "cfs")],
+              MC27NWIS[,c("dt","cfs")])
+
+save(mc27Flow, file="rdata/mc27Flow.Rdata")
+
+##load("rdata/mc27Flow.Rdata")
+##plot(mc27Flow$dt, mc27Flow$cfs, pch=16, log="y")
+
+#################### MY7B McKee 0212430653 ###############################
+rm(list=ls())
+## High res recent data
+siteNumber <- "0212430653"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MY7BNWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MY7BNWIS <- MY7BNWIS[,1:6]
+names(MY7BNWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+my7BFlow <- MY7BNWIS[,c("dt","cfs")]
+
+save(my7BFlow, file="rdata/my7BFlow.Rdata")
+
+##load("rdata/my7BFlow.Rdata")
+##plot(my7BFlow$dt, my7BFlow$cfs, pch=16, log="y")
+
+#################### MC47A Steele 0214678175 ############################
+rm(list=ls())
+## High res recent data
+siteNumber <- "0214678175"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
+##EndDate <- "2012-09-30"
+MC47ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC47ANWIS <- MC47ANWIS[,1:6]
+names(MC47ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC47A_ida.Rdata")
+
+mc47AFlow <- rbind(siteMC47A[,c("dt", "cfs")],
+              MC47ANWIS[,c("dt","cfs")])
+
+save(mc47AFlow, file="rdata/mc47AFlow.Rdata")
+
+##load("rdata/mc47AFlow.Rdata")
+##plot(mc47AFlow$dt, mc47AFlow$cfs, pch=16, log="y")
 
 
-test <- rbind(siteMC45[,c("DT", "cfs", "TZ")], data2[,c("DT","cfs", "TZ")])
-plot(test$DT, test$cfs, pch=16, cex=0.5, log="y")
 
 
 
 
 
 
-
-######################### Sites DF  ############################################
+######################### Sites DF  #########################################
 
 siteName <- c("McAlpine Upper", "McAlpine Lower", "McAlpine SC",
               "McMullen", "Upper Little Sugar", "Lower Little Sugar")

@@ -1,7 +1,6 @@
 ######################### CLEAR STUFF ##########################################
 rm(list=ls())
 graphics.off()
-source("usgsFormat.R")
 
 ## IDA data should be static, but will periodically need to update newer data
 ## via NWIS.  So, replace NWIS txt files with data retrival calls, then joins
@@ -13,333 +12,349 @@ source("usgsFormat.R")
 ######################### Sites DF  #########################################
 
 #################### MC38 McAlpine Upper 02146600 ###########################
-MC38a <- read.table(
-    file="c:/Users/95218.CHARLOTTE/Documents/R/USGS-Flow/textfiles/02146600_ida_1.txt",
+## Load in earlier flat file from IDA
+MC38a <- read.table(file="textfiles/02146600_ida_1.txt",
     sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-    col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
     colClasses=c(rep("character",3), rep("integer",2), "double",
                  "integer"))
 
-## EDT Switch on 10-01-2005
-MC38b <- read.table(
-    file="c:/Users/95218.CHARLOTTE/Documents/R/USGS-Flow/textfiles/02146600_ida_2.txt",
+## Load in later flat file from IDA
+#### EDT Switch on 10-01-2005 ####
+MC38b <- read.table(file="textfiles/02146600_ida_2.txt",
     sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-    col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
     colClasses=c(rep("character",3), rep("numeric",4)))
 
+## Rbind files into 1 df
 siteMC38 <- rbind(MC38a, MC38b)
 
-siteMC38$DT <- rep(as.POSIXct(NA), nrow(siteMC38))
-siteMC38$TZ <- rep(as.character(NA), nrow(siteMC38))
+## Initialize columns as.Posix dt and tz flag
+siteMC38$dt <- rep(as.POSIXct(NA), nrow(siteMC38))
+siteMC38$tz <- rep(as.character(NA), nrow(siteMC38))
 
-siteMC38$TZ[1:1028343] <- c("America/Panama")
-siteMC38$TZ[1028344:1097734] <- c("America/New_York")
+## Manually id row when thing switch, write in tz
+siteMC38$tz[1:1028343] <- c("America/Panama")
+siteMC38$tz[1028344:1097734] <- c("America/New_York")
 
-siteMC38$DT[1:1028343] <- as.POSIXct(siteMC38$dt[1:1028343],
-                                     tz=siteMC38$TZ[1],
+## Using manual row ids, format to posixct
+siteMC38$dt[1:1028343] <- as.POSIXct(siteMC38$dtNum[1:1028343],
+                                     tz=siteMC38$tz[1],
                                      format="%Y%m%d%H%M%S")
 
-siteMC38$DT[1028344:1097734] <- as.POSIXct(siteMC38$dt[1028344:1097734],
-                                     tz=siteMC38$TZ[1028344],
+siteMC38$dt[1028344:1097734] <- as.POSIXct(siteMC38$dtNum[1028344:1097734],
+                                     tz=siteMC38$tz[1028344],
                                      format="%Y%m%d%H%M%S")
 
+## Now format the whole thing to Eastern time, drop unneeded cols
+siteMC38$dt <- as.POSIXct(format(siteMC38$dt, tz="America/New_York",
+                                 usetz=TRUE))
 
-save(siteMC38,file="siteMC38_ida.Rdata")
+siteMC38 <- siteMC38[,c("site","dt","cfs")]
 
+## Save to an .rdata
+save(siteMC38,file="rdata/siteMC38_ida.Rdata")
 
-#################### MC4 McDowell @ Beaties Ford 0214266000 ################
-## EDT Switch on 10-01-2005
-siteMC4 <- read.table(
-    file="c:/Users/95218.CHARLOTTE/Documents/R/USGS-Flow/textfiles/0214266000_ida.txt",
+#################### MC45 McAlpine Lower 02146750 ###########################
+rm(list=ls())
+MC45a <- read.table(file="textfiles/02146750_ida_1.txt",
     sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-    col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
     colClasses=c(rep("character",3), rep("integer",2), "double",
                  "integer"))
-
-siteMC4$DT <- rep(as.POSIXct(NA), nrow(siteMC4))
-siteMC4$TZ <- rep(as.character(NA), nrow(siteMC4))
-
-siteMC4$TZ[1:535050] <- c("America/Panama")
-siteMC4$TZ[535051:602509] <- c("America/New_York")
-
-siteMC4$DT[1:535050] <- as.POSIXct(siteMC4$dt[1:535050],
-                                     tz=siteMC4$TZ[1],
-                                     format="%Y%m%d%H%M%S")
-
-siteMC4$DT[535051:602509] <- as.POSIXct(siteMC4$dt[535051:602509],
-                                     tz=siteMC4$TZ[535051],
-                                     format="%Y%m%d%H%M%S")
-
-save(siteMC4,file="siteMC4_ida.Rdata")
-
-#################### MC45 McAlpine Lower 02146750 ################################
-MC45a <- read.table(
-    file="c:/Users/95218.CHARLOTTE/Documents/R/USGS-Flow/textfiles/02146750_ida_1.txt",
+## 1997....
+MC45a2 <- read.table(file="textfiles/02146750_ida_1b.txt",
     sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-    col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
     colClasses=c(rep("character",3), rep("integer",2), "double",
                  "integer"))
-
+## drop first and last reading which dup other files
+MC45a2 <- MC45a2[2:105112,]
 ## EDT Switch on 10-01-2005
-MC45b <- read.table(
-    file="c:/Users/95218.CHARLOTTE/Documents/R/USGS-Flow/textfiles/02146750_ida_2.txt",
+MC45b <- read.table(file="textfiles/02146750_ida_2.txt",
     sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-    col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
     colClasses=c(rep("character",3), rep("numeric",4)))
 
-siteMC45 <- rbind(MC45a, MC45b)
+siteMC45 <- rbind(MC45a, MC45a2, MC45b)
 
-siteMC45$DT <- rep(as.POSIXct(NA), nrow(siteMC45))
-siteMC45$TZ <- rep(as.character(NA), nrow(siteMC45))
-
-siteMC45$TZ[1:902573] <- c("America/Panama")
-siteMC45$TZ[902574:964552] <- c("America/New_York")
-
-siteMC45$DT[1:902573] <- as.POSIXct(siteMC45$dt[1:902573],
-                                     tz=siteMC45$TZ[1],
+siteMC45$dt <- rep(as.POSIXct(NA), nrow(siteMC45))
+siteMC45$tz <- rep(as.character(NA), nrow(siteMC45))
+siteMC45$tz[1:1007684] <- c("America/Panama")
+siteMC45$tz[1007685:1069663] <- c("America/New_York")
+siteMC45$dt[1:1007684] <- as.POSIXct(siteMC45$dtNum[1:1007684],
+                                     tz=siteMC45$tz[1],
                                      format="%Y%m%d%H%M%S")
-
-siteMC45$DT[902574:964552] <- as.POSIXct(siteMC45$dt[902574:964552],
-                                     tz=siteMC45$TZ[902574],
+siteMC45$dt[1007685:1069663] <- as.POSIXct(siteMC45$dtNum[1007685:1069663],
+                                     tz=siteMC45$tz[1007685],
                                      format="%Y%m%d%H%M%S")
+siteMC45$dt <- as.POSIXct(format(siteMC45$dt, tz="America/New_York",
+                                 usetz=TRUE))
+siteMC45 <- siteMC45[,c("site","dt","cfs")]
 
-save(siteMC45,file="siteMC45_ida.Rdata")
+save(siteMC45, file="rdata/siteMC45_ida.Rdata")
 
 #############################################################################
+#################### MC4 McDowell @ Beaties Ford 0214266000 #################
+## EDT Switch on 10-01-2005
+rm(list=ls())
+siteMC4 <- read.table(file="textfiles/0214266000_ida.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
+
+siteMC4$dt <- rep(as.POSIXct(NA), nrow(siteMC4))
+siteMC4$tz <- rep(as.character(NA), nrow(siteMC4))
+
+siteMC4$tz[1:535050] <- c("America/Panama")
+siteMC4$tz[535051:602509] <- c("America/New_York")
+
+siteMC4$dt[1:535050] <- as.POSIXct(siteMC4$dtNum[1:535050],
+                                     tz=siteMC4$tz[1],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC4$dt[535051:602509] <- as.POSIXct(siteMC4$dtNum[535051:602509],
+                                     tz=siteMC4$tz[535051],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC4$dt <- as.POSIXct(format(siteMC4$dt, tz="America/New_York",
+                                usetz=TRUE))
+siteMC4 <- siteMC4[,c("site","dt","cfs")]
+
+save(siteMC4,file="rdata/siteMC4_ida.Rdata")
+
 #############################################################################
-
-
-
-
-
-
-
-## High res recent data
-siteNumber <- "02146600"
-QParameterCd <- "00060"
-StartDate <- "2007-10-01"
-##EndDate <- "2012-09-30"
-dataData <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
-                       startDate=StartDate)
-##Daily <- readNWISDaily(siteNumber, QParameterCd, startDate=StartDate, endDate="")
-INFO <- readNWISInfo(siteNumber, parameterCd="00060")
-
-eList <- as.egret(INFO,dataData)
-eList <- setPA(eList)
-
-
-
-
-## NWIS Data
-siteC38 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/text files/02146600_nwis.txt",
-                sep="", header=FALSE, skip=29, fill=TRUE, as.is=TRUE,
-                col.names=c("v1", "v2", "date", "time", "tz", "cfs", "cfsCd",
-                            "ft", "ftCd", "in", "inCd"))
-
-siteC38$DT <- rep(as.POSIXct(NA), nrow(siteC38))
-siteC38$TZ <- rep(as.character(NA), nrow(siteC38))
-
-siteC38$TZ[which(siteC38$tz=="EST")] <- c("America/Panama")
-siteC38$TZ[which(siteC38$tz=="EDT")] <- c("America/New_York")
-
-
-qs <- unname(floor(quantile(seq(1, length(siteC38$date)),
-                            probs=seq(0, 1, .01))))
-
-for (n in 1:length(siteC38$DT)){
-
-    siteC38$DT[n] <- as.POSIXct(paste(siteC38$date[n],siteC38$time[n],sep=" "),
-                                tz=siteC38$TZ[n])
-    if (n %in% qs) {
-        print(Sys.time())
-        print(n/length(siteC38$date))
-    }
-}
-
-save(siteC38,file="siteC38.Rdata")
-siteC38s <- siteC38[ ,c("DT", "cfs")]
-save(siteC38s,file="siteC38s.Rdata")
+#################### MC42 McMullen  02146700 ################################
 rm(list=ls())
+## Load in earlier flat file from IDA
+MC42a <- read.table(file="textfiles/02146700_ida_1.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
 
-load("siteMC38s.Rdata")
-load("siteC38s.Rdata")
-flowMC38 <- rbind(siteAB38s, siteC38s)
-save(site38s, file="flowMC38.Rdata")
+## Load in later flat file from IDA
+#### EDT Switch on 10-01-2005 ####
+MC42b <- read.table(file="textfiles/02146700_ida_2.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("numeric",4)))
 
+## Rbind files into 1 df
+siteMC42 <- rbind(MC42a, MC42b)
 
+## Initialize columns as.Posix dt and tz flag
+siteMC42$dt <- rep(as.POSIXct(NA), nrow(siteMC42))
+siteMC42$tz <- rep(as.character(NA), nrow(siteMC42))
 
+## Manually id row when thing switch, write in tz
+siteMC42$tz[1:644802] <- c("America/Panama")
+siteMC42$tz[644803:713031] <- c("America/New_York")
 
+## Using manual row ids, format to posixct
+siteMC42$dt[1:644802] <- as.POSIXct(siteMC42$dtNum[1:644802],
+                                     tz=siteMC42$tz[1],
+                                     format="%Y%m%d%H%M%S")
 
+siteMC42$dt[644803:713031] <- as.POSIXct(siteMC42$dtNum[644803:713031],
+                                     tz=siteMC42$tz[644803],
+                                     format="%Y%m%d%H%M%S")
 
+## Now format the whole thing to Eastern time, drop unneeded cols
+siteMC42$dt <- as.POSIXct(format(siteMC42$dt, tz="America/New_York",
+                                 usetz=TRUE))
 
+siteMC42 <- siteMC42[,c("site","dt","cfs")]
 
+## Save to an .rdata
+save(siteMC42,file="rdata/siteMC42_ida.Rdata")
 
-
-
-
-
-
-
-
-
-#################### MC45 McAlpine Lower 02146750 (R:3) ##########################
-a45 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/02146750_ida_1.txt",
-                sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-                col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
-                colClasses=c(rep("character",3), rep("integer",2), "double",
-                             "integer"))
-
-b45 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/02146750_ida_2.txt",
-                sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-                col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
-                colClasses=c(rep("character",3), rep("numeric",4)))
-
-siteAB45 <- rbind(a45,b45)
-
-siteAB45$DT <- rep(as.POSIXct(NA), nrow(siteAB45))
-
-siteAB45$TZ <- rep(as.character(NA), nrow(siteAB45))
-
-siteAB45$TZ[which(siteAB45$tz=="EST")] <- c("America/Panama")
-siteAB45$TZ[which(siteAB45$tz=="EDT")] <- c("America/New_York")
-
-qs <- unname(floor(quantile(seq(1, length(siteAB45$dt)),
-                            probs=seq(0, 1, .01))))
-
-for (n in 1:length(siteAB45$DT)){
-    siteAB45$DT[n] <- as.POSIXct(siteAB45$dt[n],tz=siteAB45$TZ[n],
-                                       format="%Y%m%d%H%M%S")
-    if (n %in% qs) {
-        print(Sys.time())
-        print(n/length(siteAB45$dt))
-    }
-}
-
-save(siteAB45,file="siteAB45.Rdata")
-siteAB45s <- siteAB45[ ,c("DT", "cfs")]
-save(siteAB45s,file="siteAB45s.Rdata")
+#############################################################################
+#################### MC14A Long Creek @ Pine/Rhyne 0214291555 ################
+## EDT Switch on 10-01-2005
 rm(list=ls())
+siteMC14A <- read.table(file="textfiles/0214291555_ida.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
 
+siteMC14A$dt <- rep(as.POSIXct(NA), nrow(siteMC14A))
+siteMC14A$tz <- rep(as.character(NA), nrow(siteMC14A))
 
-## NWIS Data
-siteC45 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/02146750_nwis.txt",
-                sep="", header=FALSE, skip=29, fill=TRUE, as.is=TRUE,
-                col.names=c("v1", "v2", "date", "time", "tz", "cfs", "cfsCd",
-                            "ft", "ftCd", "in", "inCd"))
+siteMC14A$tz[1:241489] <- c("America/Panama")
+siteMC14A$tz[241490:312208] <- c("America/New_York")
 
-siteC45$DT <- rep(as.POSIXct(NA), nrow(siteC45))
-siteC45$TZ <- rep(as.character(NA), nrow(siteC45))
+siteMC14A$dt[1:241489] <- as.POSIXct(siteMC14A$dtNum[1:241489],
+                                     tz=siteMC14A$tz[1],
+                                     format="%Y%m%d%H%M%S")
 
-siteC45$TZ[which(siteC45$tz=="EST")] <- c("America/Panama")
-siteC45$TZ[which(siteC45$tz=="EDT")] <- c("America/New_York")
+siteMC14A$dt[241490:312208] <- as.POSIXct(siteMC14A$dtNum[241490:312208],
+                                     tz=siteMC14A$tz[241490],
+                                     format="%Y%m%d%H%M%S")
 
+siteMC14A$dt <- as.POSIXct(format(siteMC14A$dt, tz="America/New_York",
+                                usetz=TRUE))
+siteMC14A <- siteMC14A[,c("site","dt","cfs")]
 
-qs <- unname(floor(quantile(seq(1, length(siteC45$date)),
-                            probs=seq(0, 1, .01))))
+save(siteMC14A,file="rdata/siteMC14A_ida.Rdata")
 
-for (n in 1:length(siteC45$DT)){
-
-    siteC45$DT[n] <- as.POSIXct(paste(siteC45$date[n],siteC45$time[n],sep=" "),
-                                tz=siteC45$TZ[n])
-    if (n %in% qs) {
-        print(Sys.time())
-        print(n/length(siteC45$date))
-    }
-}
-
-save(siteC45,file="siteC45.Rdata")
-siteC45s <- siteC45[ ,c("DT", "cfs")]
-save(siteC45s,file="siteC45s.Rdata")
+#############################################################################
+#################### MC22A Irwin 02146300 ########################
 rm(list=ls())
+## Load in earlier flat file from IDA
+MC22Aa <- read.table(file="textfiles/02146300_ida_1.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
 
+## Load in later flat file from IDA
+#### EDT Switch on 10-01-2005 ####
+MC22Ab <- read.table(file="textfiles/02146300_ida_2.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("numeric",4)))
 
-load("siteAB45s.Rdata")
-load("siteC45s.Rdata")
-flowMC45 <- rbind(siteAB45s, siteC45s)
-save(flowMC45, file="flowMC45.Rdata")
+## Rbind files into 1 df
+siteMC22A <- rbind(MC22Aa, MC22Ab)
 
-#################### MC42 McMullen  02146700 (R:2) #############################
-a42 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/02146700_ida_1.txt",
-                sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-                col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
-                colClasses=c(rep("character",3), rep("integer",2), "double",
-                             "integer"))
+## Initialize columns as.Posix dt and tz flag
+siteMC22A$dt <- rep(as.POSIXct(NA), nrow(siteMC22A))
+siteMC22A$tz <- rep(as.character(NA), nrow(siteMC22A))
 
-b42 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/02146700_ida_2.txt",
-                sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
-                col.names=c("site", "dt", "tz", "dd", "acCode", "cfs", "prec"),
-                colClasses=c(rep("character",3), rep("numeric",4)))
+## Manually id row when thing switch, write in tz
+siteMC22A$tz[1:651695] <- c("America/Panama")
+siteMC22A$tz[651696:720709] <- c("America/New_York")
 
-siteAB42 <- rbind(a42,b42)
+## Using manual row ids, format to posixct
+siteMC22A$dt[1:651695] <- as.POSIXct(siteMC22A$dtNum[1:651695],
+                                     tz=siteMC22A$tz[1],
+                                     format="%Y%m%d%H%M%S")
 
-siteAB42$DT <- rep(as.POSIXct(NA), nrow(siteAB42))
+siteMC22A$dt[651696:720709] <- as.POSIXct(siteMC22A$dtNum[651696:720709],
+                                     tz=siteMC22A$tz[651696],
+                                     format="%Y%m%d%H%M%S")
 
-siteAB42$TZ <- rep(as.character(NA), nrow(siteAB42))
+## Now format the whole thing to Eastern time, drop unneeded cols
+siteMC22A$dt <- as.POSIXct(format(siteMC22A$dt, tz="America/New_York",
+                                 usetz=TRUE))
 
-siteAB42$TZ[which(siteAB42$tz=="EST")] <- c("America/Panama")
-siteAB42$TZ[which(siteAB42$tz=="EDT")] <- c("America/New_York")
+siteMC22A <- siteMC22A[,c("site","dt","cfs")]
 
-qs <- unname(floor(quantile(seq(1, length(siteAB42$dt)), probs=seq(0, 1, .01))))
+## Save to an .rdata
+save(siteMC22A,file="rdata/siteMC22A_ida.Rdata")
 
-for (n in 1:length(siteAB42$DT)){
-
-    siteAB42$DT[n] <- as.POSIXct(siteAB42$dt[n],tz=siteAB42$TZ[n],
-                                       format="%Y%m%d%H%M%S")
-    if (n %in% qs) {
-        print(Sys.time())
-        print(n/length(siteAB42$dt))
-    }
-}
-
-
-save(siteAB42,file="siteAB42.Rdata")
-siteAB42s <- siteAB42[ ,c("DT", "cfs")]
-save(siteAB42s,file="siteAB42s.Rdata")
+#############################################################################
+#################### MC45B McAlpine SC 0214676115 ###########################
+## EDT Switch on 10-01-2005
 rm(list=ls())
+siteMC45B <- read.table(file="textfiles/0214676115_ida.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
+#### NOTE Only 1 year of IDA data, all EDT time
+siteMC45B$dt <- rep(as.POSIXct(NA), nrow(siteMC45B))
 
-## NWIS Data
-siteC42 <-
-    read.table(file="c:/Users/95218/Documents/R/usgs flow/02146700_nwis.txt",
-                sep="", header=FALSE, skip=29, fill=TRUE, as.is=TRUE,
-                col.names=c("v1", "v2", "date", "time", "tz", "cfs", "cfsCd",
-                            "ft", "ftCd", "in", "inCd"))
+siteMC45B$dt <- as.POSIXct(siteMC45B$dtNum, tz="America/New_York",
+                           format="%Y%m%d%H%M%S")
+siteMC45B <- siteMC45B[,c("site","dt","cfs")]
 
-siteC42$DT <- rep(as.POSIXct(NA), nrow(siteC42))
-siteC42$TZ <- rep(as.character(NA), nrow(siteC42))
-
-siteC42$TZ[which(siteC42$tz=="EST")] <- c("America/Panama")
-siteC42$TZ[which(siteC42$tz=="EDT")] <- c("America/New_York")
+save(siteMC45B,file="rdata/siteMC45B_ida.Rdata")
 
 
-qs <- unname(floor(quantile(seq(1, length(siteC42$date)),
-                            probs=seq(0, 1, .01))))
-
-for (n in 1:length(siteC42$DT)){
-
-    siteC42$DT[n] <- as.POSIXct(paste(siteC42$date[n],siteC42$time[n],sep=" "),
-                                tz=siteC42$TZ[n])
-    if (n %in% qs) {
-        print(Sys.time())
-        print(n/length(siteC42$date))
-    }
-}
-
-save(siteC42,file="siteC42.Rdata")
-siteC42s <- siteC42[ ,c("DT", "cfs")]
-save(siteC42s,file="siteC42s.Rdata")
+#################### MC49A LSC 02146530 #####################################
+## EDT Switch on 10-01-2005
 rm(list=ls())
+siteMC49A <- read.table(file="textfiles/02146530_ida.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
 
-## Combine
-load("siteAB42s.Rdata")
-load("siteC42s.Rdata")
-flowMC42 <- rbind(siteAB42s, siteC42s)
-save(flowMC42,file="flowMC42")
+siteMC49A$dt <- rep(as.POSIXct(NA), nrow(siteMC49A))
+siteMC49A$tz <- rep(as.character(NA), nrow(siteMC49A))
+
+siteMC49A$tz[1:287512] <- c("America/Panama")
+siteMC49A$tz[287513:358616] <- c("America/New_York")
+
+siteMC49A$dt[1:287512] <- as.POSIXct(siteMC49A$dtNum[1:287512],
+                                     tz=siteMC49A$tz[1],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC49A$dt[287513:358616] <- as.POSIXct(siteMC49A$dtNum[287513:358616],
+                                     tz=siteMC49A$tz[287513],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC49A$dt <- as.POSIXct(format(siteMC49A$dt, tz="America/New_York",
+                                usetz=TRUE))
+siteMC49A <- siteMC49A[,c("site","dt","cfs")]
+
+save(siteMC49A,file="rdata/siteMC49A_ida.Rdata")
+
+#################### MC27 Sugar Creek 02146381 ##############################
+## EDT Switch on 10-01-2005
+rm(list=ls())
+siteMC27 <- read.table(file="textfiles/02146381_ida.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
+
+siteMC27$dt <- rep(as.POSIXct(NA), nrow(siteMC27))
+siteMC27$tz <- rep(as.character(NA), nrow(siteMC27))
+
+siteMC27$tz[1:380394] <- c("America/Panama")
+siteMC27$tz[380395:450265] <- c("America/New_York")
+
+siteMC27$dt[1:380394] <- as.POSIXct(siteMC27$dtNum[1:380394],
+                                     tz=siteMC27$tz[1],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC27$dt[380395:450265] <- as.POSIXct(siteMC27$dtNum[380395:450265],
+                                     tz=siteMC27$tz[380395],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC27$dt <- as.POSIXct(format(siteMC27$dt, tz="America/New_York",
+                                usetz=TRUE))
+siteMC27 <- siteMC27[,c("site","dt","cfs")]
+
+save(siteMC27,file="rdata/siteMC27_ida.Rdata")
+
+#################### MY7B McKee 0212430653 ##################################
+## No IDA data
+
+#################### MC47A Steele 0214678175 ################################
+## EDT Switch on 10-01-2005
+rm(list=ls())
+siteMC47A <- read.table(file="textfiles/0214678175_ida.txt",
+    sep="", header=FALSE, skip=67, fill=TRUE, as.is=TRUE,
+    col.names=c("site", "dtNum", "TZ", "dd", "acCode", "cfs", "prec"),
+    colClasses=c(rep("character",3), rep("integer",2), "double",
+                 "integer"))
+
+siteMC47A$dt <- rep(as.POSIXct(NA), nrow(siteMC47A))
+siteMC47A$tz <- rep(as.character(NA), nrow(siteMC47A))
+
+siteMC47A$tz[1:257564] <- c("America/Panama")
+siteMC47A$tz[257565:326779] <- c("America/New_York")
+
+siteMC47A$dt[1:257564] <- as.POSIXct(siteMC47A$dtNum[1:257564],
+                                     tz=siteMC47A$tz[1],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC47A$dt[257565:326779] <- as.POSIXct(siteMC47A$dtNum[257565:326779],
+                                     tz=siteMC47A$tz[257565],
+                                     format="%Y%m%d%H%M%S")
+
+siteMC47A$dt <- as.POSIXct(format(siteMC47A$dt, tz="America/New_York",
+                                usetz=TRUE))
+siteMC47A <- siteMC47A[,c("site","dt","cfs")]
+
+save(siteMC47A,file="rdata/siteMC47A_ida.Rdata")
+
 
 
 
@@ -359,49 +374,5 @@ usgsArea <- c(38.6, 92.4, 95.9,
 
 
 
-rm(site02146600)
-site02146600 <- data.frame(dt=as.POSIXct(character()),cfs=numeric())
 
 
-
-
-1980-27-04 2:00, 1980-26-10 2:00
-1981-26-04 2:00, 1981-25-10 2:00
-1982-25-04 2:00, 1982-31-10 2:00
-1983-24-04 2:00, 1983-30-10 2:00
-1984-29-04 2:00, 1984-28-10 2:00
-1985-28-04 2:00, 1985-27-10 2:00
-1986-27-04 2:00, 1986-26-10 2:00
-1987-5-04 2:00, 1987-25-10 2:00
-1988-3-04 2:00, 1988-30-10 2:00
-1989-2-04 2:00, 1989-29-10 2:00
-1990-1-04 2:00, 1990-28-10 2:00
-1991-7-04 2:00, 1991-27-10 2:00
-1992-5-04 2:00, 1992-25-10 2:00
-1993-4-04 2:00, 1993-31-10 2:00
-1994-3-04 2:00, 1994-30-10 2:00
-1995-2-04 2:00, 1995-29-10 2:00
-1996-7-04 2:00, 1996-27-10 2:00
-1997-6-04 2:00, 1997-26-10 2:00
-1998-5-04 2:00, 1998-25-10 2:00
-1999-4-04 2:00, 1999-31-10 2:00
-2000-2-04 2:00 2000-29-10 2:00
-2001-1-04 2:00, 2001-28-10 2:00
-2002-7-04 2:00, 2002-27-10 2:00
-2003-6-04 2:00, 2003-26-10 2:00
-2004-4-04 2:00, 2004-31-10 2:00
-2005-3-04 2:00, 2005-30-10 2:00
-2006-2-04 2:00, 2006-29-10 2:00
-2007-11-03 2:00, 2007-4-11 2:00
-2008-9-03 2:00, 2008-2-11 2:00
-2009-8-03 2:00, 2009-1-11 2:00
-2010-14-03 2:00, 2010-7-11 2:00
-2011-13-03 2:00, 2011-6-11 2:00
-2012-11-03 2:00, 2012-4-11 2:00
-2013-10-03 2:00, 2013-3-11 2:00
-2014-9-03 2:00, 2014-2-11 2:00
-2015-8-03 2:00, 2015-1-11 2:00
-2016-13-03 2:00, 2016-6-11 2:00
-2017-12-03 2:00, 2017-5-11 2:00
-2018-11-03 2:00, 2018-4-11 2:00
-2019-10-03 2:00, 2019-3-11 2:00
