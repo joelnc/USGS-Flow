@@ -25,6 +25,7 @@ mc38Flow <- rbind(siteMC38[,c("dt", "cfs")],
               MC38NWIS[,c("dt","cfs")])
 
 save(mc38Flow, file="rdata/mc38Flow.Rdata")
+saveRDS(mc38Flow, "rdata/MC38.rds")
 
 ##load("rdata/mc38Flow.Rdata")
 ##plot(mc38Flow$dt, mc38Flow$cfs, pch=16)
@@ -48,6 +49,7 @@ mc45Flow <- rbind(siteMC45[,c("dt", "cfs")],
               MC45NWIS[,c("dt","cfs")])
 
 save(mc45Flow, file="rdata/mc45Flow.Rdata")
+saveRDS(mc45Flow, "rdata/MC45.rds")
 
 ##load("rdata/mc45Flow.Rdata")
 ##plot(mc45Flow$dt, mc45Flow$cfs, pch=16, log="y")
@@ -71,6 +73,7 @@ mc42Flow <- rbind(siteMC42[,c("dt", "cfs")],
               MC42NWIS[,c("dt","cfs")])
 
 save(mc42Flow, file="rdata/mc42Flow.Rdata")
+saveRDS(mc42Flow, "rdata/MC42.rds")
 
 ##load("rdata/mc42Flow.Rdata")
 ##plot(mc42Flow$dt, mc42Flow$cfs, pch=16, log="y")
@@ -94,6 +97,7 @@ mc14AFlow <- rbind(siteMC14A[,c("dt", "cfs")],
               MC14ANWIS[,c("dt","cfs")])
 
 save(mc14AFlow, file="rdata/mc14AFlow.Rdata")
+saveRDS(mc14AFlow, "rdata/MC14A.rds")
 
 ##load("rdata/mc14AFlow.Rdata")
 ##plot(mc14AFlow$dt, mc14AFlow$cfs, pch=16, log="y")
@@ -117,6 +121,7 @@ mc22AFlow <- rbind(siteMC22A[,c("dt", "cfs")],
               MC22ANWIS[,c("dt","cfs")])
 
 save(mc22AFlow, file="rdata/mc22AFlow.Rdata")
+saveRDS(mc22AFlow, "rdata/MC22A.rds")
 
 ##load("rdata/mc22AFlow.Rdata")
 ##plot(mc22AFlow$dt, mc22AFlow$cfs, pch=16, log="y")
@@ -140,6 +145,7 @@ mc45BFlow <- rbind(siteMC45B[,c("dt", "cfs")],
               MC45BNWIS[,c("dt","cfs")])
 
 save(mc45BFlow, file="rdata/mc45BFlow.Rdata")
+saveRDS(mc45BFlow, "rdata/MC45B.rds")
 
 ##load("rdata/mc45BFlow.Rdata")
 ##plot(mc45BFlow$dt, mc45BFlow$cfs, pch=16, log="y")
@@ -163,6 +169,7 @@ mc49AFlow <- rbind(siteMC49A[,c("dt", "cfs")],
               MC49ANWIS[,c("dt","cfs")])
 
 save(mc49AFlow, file="rdata/mc49AFlow.Rdata")
+saveRDS(mc49AFlow, "rdata/MC49A.rds")
 
 ##load("rdata/mc49AFlow.Rdata")
 ##plot(mc49AFlow$dt, mc49AFlow$cfs, pch=16, log="y")
@@ -186,6 +193,7 @@ mc27Flow <- rbind(siteMC27[,c("dt", "cfs")],
               MC27NWIS[,c("dt","cfs")])
 
 save(mc27Flow, file="rdata/mc27Flow.Rdata")
+saveRDS(mc27Flow, "rdata/MC27.rds")
 
 ##load("rdata/mc27Flow.Rdata")
 ##plot(mc27Flow$dt, mc27Flow$cfs, pch=16, log="y")
@@ -206,6 +214,7 @@ names(MY7BNWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 my7BFlow <- MY7BNWIS[,c("dt","cfs")]
 
 save(my7BFlow, file="rdata/my7BFlow.Rdata")
+saveRDS(my7BFlow, "rdata/MY7B.rds")
 
 ##load("rdata/my7BFlow.Rdata")
 ##plot(my7BFlow$dt, my7BFlow$cfs, pch=16, log="y")
@@ -229,6 +238,7 @@ mc47AFlow <- rbind(siteMC47A[,c("dt", "cfs")],
               MC47ANWIS[,c("dt","cfs")])
 
 save(mc47AFlow, file="rdata/mc47AFlow.Rdata")
+saveRDS(mc47AFlow, "rdata/MC47A.rds")
 
 ##load("rdata/mc47AFlow.Rdata")
 ##plot(mc47AFlow$dt, mc47AFlow$cfs, pch=16, log="y")
