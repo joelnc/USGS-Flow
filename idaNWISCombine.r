@@ -31,21 +31,21 @@ rm(MC14ANWIS, mc14AFlow)
 #############################################################################
 #################### MC17 Paw 0214295600 ####################################
 ## High res recent data
-## siteNumber <- "0214295600"
-## MC17NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
-##                        startDate=StartDate, tz="America/New_York")
+siteNumber <- "0214295600"
+MC17NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
 
-## MC17NWIS <- MC17NWIS[,1:6]
-## names(MC17NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+MC17NWIS <- MC17NWIS[,1:6]
+names(MC17NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 
-## load("rdata/siteMC17_ida.Rdata")
+load("rdata/siteMC17_ida.Rdata")
 
-## mc17Flow <- rbind(siteMC17[,c("dt", "cfs")],
-##               MC17NWIS[,c("dt","cfs")])
+mc17Flow <- rbind(siteMC17[,c("dt", "cfs")],
+              MC17NWIS[,c("dt","cfs")])
 
-## save(mc17Flow, file="rdata/mc17Flow.Rdata")
-## saveRDS(mc17Flow, "rdata/MC17.rds")
-## rm(MC17NWIS, mc17Flow)
+save(mc17Flow, file="rdata/mc17Flow.Rdata")
+saveRDS(mc17Flow, "rdata/MC17.rds")
+rm(MC17NWIS, mc17Flow)
 
 #################### MC22A Irwin 02146300 ########################
 ## High res recent data
@@ -66,24 +66,23 @@ saveRDS(mc22AFlow, "rdata/MC22A.rds")
 rm(MC22ANWIS, mc22AFlow)
 
 #############################################################################
-#################### MC25 Coffey 02146300 ###################################
-## High res recent data
-## siteNumber <- "02146300"
-## MC25NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
-##                        startDate=StartDate, tz="America/New_York")
+#################### MC25 Coffey 02146348 ###################################
+##High res recent data
+siteNumber <- "02146348"
+MC25NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
 
-## MC25NWIS <- MC25NWIS[,1:6]
-## names(MC25NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+MC25NWIS <- MC25NWIS[,1:6]
+names(MC25NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 
-## load("rdata/siteMC25_ida.Rdata")
+load("rdata/siteMC25_ida.Rdata")
 
-## mc25Flow <- rbind(siteMC25[,c("dt", "cfs")],
-##               MC25NWIS[,c("dt","cfs")])
+mc25Flow <- rbind(siteMC25[,c("dt", "cfs")],
+              MC25NWIS[,c("dt","cfs")])
 
-## save(mc25Flow, file="rdata/mc25Flow.Rdata")
-## saveRDS(mc25Flow, "rdata/MC25.rds")
-## rm(MC25NWIS, mc25Flow)
-
+save(mc25Flow, file="rdata/mc25Flow.Rdata")
+saveRDS(mc25Flow, "rdata/MC25.rds")
+rm(MC25NWIS, mc25Flow)
 
 #################### MC27 Sugar Creek 02146381 ###########################
 ## High res recent data
@@ -106,9 +105,41 @@ rm(MC27NWIS, mc27Flow)
 
 #############################################################################
 #################### MC29A1 Little Sugar 02146409 ###########################
+## High res recent data
+siteNumber <- "02146409"
+MC29A1NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC29A1NWIS <- MC29A1NWIS[,1:6]
+names(MC29A1NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC29A1_ida.Rdata")
+
+mc29A1Flow <- rbind(siteMC29A1[,c("dt", "cfs")],
+              MC29A1NWIS[,c("dt","cfs")])
+
+save(mc29A1Flow, file="rdata/mc29A1Flow.Rdata")
+saveRDS(mc29A1Flow, "rdata/MC29A1.rds")
+rm(MC29A1NWIS, mc29A1Flow)
 
 #############################################################################
 #################### MC30A Edwards Branch 0214643820 ########################
+## High res recent data
+siteNumber <- "0214643820"
+MC30ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC30ANWIS <- MC30ANWIS[,1:6]
+names(MC30ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC30A_ida.Rdata")
+
+mc30AFlow <- rbind(siteMC30A[,c("dt", "cfs")],
+              MC30ANWIS[,c("dt","cfs")])
+
+save(mc30AFlow, file="rdata/mc30AFlow.Rdata")
+saveRDS(mc30AFlow, "rdata/MC30A.rds")
+rm(MC30ANWIS, mc30AFlow)
 
 
 #################### MC33 Briar 0214645022 ##################################
@@ -149,6 +180,23 @@ rm(MC38NWIS, mc38Flow)
 
 #############################################################################
 #################### MC40A Fourmile 02146670 ################################
+## No NWIS DATA??????
+
+## High res recent data
+## siteNumber <- "02146670"
+## MC40ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+##                        startDate=StartDate, tz="America/New_York")
+
+## MC40ANWIS <- MC40ANWIS[,1:6]
+## names(MC40ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+## load("rdata/siteMC40A_ida.Rdata")
+
+## mc40AFlow <- rbind(siteMC40A[,c("dt", "cfs")],
+##               MC40ANWIS[,c("dt","cfs")])
+
+## save(mc40AFlow, file="rdata/mc40AFlow.Rdata")
+## saveRDS(mc40AFlow, "rdata/MC40A.rds")
 
 
 #################### MC42 McMullen Lower 02146700 ###########################
@@ -247,13 +295,56 @@ rm(MC49ANWIS, mc49AFlow)
 
 #############################################################################
 #################### MC50 Gar 0214266080 ####################################
+siteNumber <- "0214266080"
+MC50NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC50NWIS <- MC50NWIS[,1:6]
+names(MC50NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC50_ida.Rdata")
+
+mc50Flow <- rbind(siteMC50[,c("dt", "cfs")],
+              MC50NWIS[,c("dt","cfs")])
+
+save(mc50Flow, file="rdata/mc50Flow.Rdata")
+saveRDS(mc50Flow, "rdata/MC50.rds")
+rm(MC50NWIS, mc50Flow)
 
 
 #############################################################################
 #################### MC51 Six Mile 0214685800 ###############################
+siteNumber <- "0214685800"
+MC51NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC51NWIS <- MC51NWIS[,1:6]
+names(MC51NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+mc51Flow <-  MC51NWIS[,c("dt","cfs")]
+
+save(mc51Flow, file="rdata/mc51Flow.Rdata")
+saveRDS(mc51Flow, "rdata/MC51.rds")
+rm(MC51NWIS, mc51Flow)
+
 
 #############################################################################
 #################### MC66 Beaverdam 0214297160 #############################
+siteNumber <- "0214297160"
+MC66NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MC66NWIS <- MC66NWIS[,1:6]
+names(MC66NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMC66_ida.Rdata")
+
+mc66Flow <- rbind(siteMC66[,c("dt", "cfs")],
+              MC66NWIS[,c("dt","cfs")])
+
+save(mc66Flow, file="rdata/mc66Flow.Rdata")
+saveRDS(mc66Flow, "rdata/MC66.rds")
+rm(MC66NWIS, mc66Flow)
 
 #################### MY11B Mallard 0212414900 ###############################
 ## High res recent data
@@ -276,13 +367,51 @@ rm(MY11BNWIS, my11BFlow)
 
 #############################################################################
 #################### MY12B Back 02124269 ####################################
+siteNumber <- "02124269"
+MY12BNWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MY12BNWIS <- MY12BNWIS[,1:6]
+names(MY12BNWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+my12BFlow <-  MY12BNWIS[,c("dt","cfs")]
+
+save(my12BFlow, file="rdata/my12BFlow.Rdata")
+saveRDS(my12BFlow, "rdata/MY12B.rds")
+rm(MY12BNWIS, my12BFlow)
 
 #############################################################################
 #################### MY13 Reedy 0212430293 ##################################
+siteNumber <- "0212430293"
+MY13NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
+
+MY13NWIS <- MY13NWIS[,1:6]
+names(MY13NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+my13Flow <-  MY13NWIS[,c("dt","cfs")]
+
+save(my13Flow, file="rdata/my13Flow.Rdata")
+saveRDS(my13Flow, "rdata/MY13.rds")
+rm(MY13NWIS, my13Flow)
 
 #############################################################################
-#################### MY13A Reedy Plaza Rd ?? ################################
+#################### MY13A Reedy Plaza Rd 0212427947 ########################
+siteNumber <- "0212427947"
+MY13ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       startDate=StartDate, tz="America/New_York")
 
+MY13ANWIS <- MY13ANWIS[,1:6]
+names(MY13ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+load("rdata/siteMY13A_ida.Rdata")
+
+my13AFlow <- rbind(siteMY13A[,c("dt", "cfs")],
+              MY13ANWIS[,c("dt","cfs")])
+
+save(my13AFlow, file="rdata/my13AFlow.Rdata")
+saveRDS(my13AFlow, "rdata/MY13A.rds")
+rm(MY13ANWIS, my13AFlow)
 
 #################### MY7B McKee 0212430653 ###############################
 ## High res recent data
