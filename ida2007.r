@@ -115,6 +115,7 @@ siteMC22A <- siteMC22A[,c("site","dt","cfs")]
 
 ## Save to an .rdata
 save(siteMC22A,file="rdata/siteMC22A_ida.Rdata")
+
 #############################################################################
 #################### MC25 Coffey 02146348 ###################################
 rm(list=ls())
@@ -533,17 +534,20 @@ siteMC66 <- read.table(file="textfiles/0214297160_ida.txt",
     colClasses=c(rep("character",3), rep("integer",2), "double",
                  "integer"))
 
+## Has some weird NA crap near the end... drop
+siteMC66 <- siteMC66[!is.na(siteMC66$dd),]
+
 siteMC66$dt <- rep(as.POSIXct(NA), nrow(siteMC66))
 siteMC66$tz <- rep(as.character(NA), nrow(siteMC66))
 
 siteMC66$tz[1:93092] <- c("America/Panama")
-siteMC66$tz[93093:166946] <- c("America/New_York")
+siteMC66$tz[93093:161757] <- c("America/New_York")
 
 siteMC66$dt[1:93092] <- as.POSIXct(siteMC66$dtNum[1:93092],
                                      tz=siteMC66$tz[1],
                                      format="%Y%m%d%H%M%S")
 
-siteMC66$dt[93093:166946] <- as.POSIXct(siteMC66$dtNum[93093:166946],
+siteMC66$dt[93093:161757] <- as.POSIXct(siteMC66$dtNum[93093:161757],
                                      tz=siteMC66$tz[93093],
                                      format="%Y%m%d%H%M%S")
 
@@ -600,17 +604,20 @@ siteMY13A <- read.table(file="textfiles/0212427947_ida.txt",
     colClasses=c(rep("character",3), rep("integer",2), "double",
                  "integer"))
 
+## Has some weird NA crap near the end... drop
+siteMY13A <- siteMY13A[!is.na(siteMY13A$dd),]
+
 siteMY13A$dt <- rep(as.POSIXct(NA), nrow(siteMY13A))
 siteMY13A$tz <- rep(as.character(NA), nrow(siteMY13A))
 
 siteMY13A$tz[1:133890] <- c("America/Panama")
-siteMY13A$tz[133891:205318] <- c("America/New_York")
+siteMY13A$tz[133891:204090] <- c("America/New_York")
 
 siteMY13A$dt[1:133890] <- as.POSIXct(siteMY13A$dtNum[1:133890],
                                      tz=siteMY13A$tz[1],
                                      format="%Y%m%d%H%M%S")
 
-siteMY13A$dt[133891:205318] <- as.POSIXct(siteMY13A$dtNum[133891:205318],
+siteMY13A$dt[133891:204090] <- as.POSIXct(siteMY13A$dtNum[133891:204090],
                                      tz=siteMY13A$tz[133891],
                                      format="%Y%m%d%H%M%S")
 
