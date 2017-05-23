@@ -10,6 +10,22 @@ library("dataRetrieval")
 ## Now... need to loop over .rds 15 min files, do an NWIS pull from tail to
 ## presnet, rbind, save.... easy peasy...
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #################### MC38 McAlpine Upper 02146600 (R) #######################
 ## High res recent data
 siteNumber <- "02146600"
