@@ -12,7 +12,7 @@ StartDate <- "2007-10-01"
 usgsCodes <- data.frame(cityCode=c("MC14A", "MC17", "MC22A", "MC25",
                                    "MC27", "MC29A1", "MC30A", "MC33",
                                    "MC38", "MC40A", "MC42", "MC45",
-                                   "MC45B", "MC47A", "MC49A", "MC50",
+                                   "MC45B", "MC47A", "MC49A",
                                    "MC51", "MC66", "MY11B", "MY12B",
                                    "MY13", "MY13A", "MY7B"),
                         usgsCode=c("0214291555", "0214295600",
@@ -22,7 +22,7 @@ usgsCodes <- data.frame(cityCode=c("MC14A", "MC17", "MC22A", "MC25",
                                    "02146600", "NA",
                                    "02146700", "02146750",
                                    "0214676115", "0214678175",
-                                   "02146530", "0214266080",
+                                   "02146530",
                                    "0214685800", "0214297160",
                                    "0212414900", "02124269",
                                    "0212430293", "0212427947",
@@ -58,6 +58,7 @@ system.time({
 })
 
 ## took only ~1 minute to pull ~6 days worth of data.
+## took  ~ 1.5 minute to pull ~17 days worth of data.
 
 
 

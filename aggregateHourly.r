@@ -24,8 +24,12 @@ hourlyAg <- function(fileName) {
 
 flowFiles <- list.files(path="./rdata", pattern="rds")
 
+system.time({
+    junk <- lapply(flowFiles, hourlyAg)
+})
+##   user  system elapsed
+## 155.47    1.20  156.78
 
-junk <- lapply(flowFiles, hourlyAg)
 
 ## ## For now, individually call files.  Could file path /match
 ## ## ".rds hourly", or manually config a list for apply
