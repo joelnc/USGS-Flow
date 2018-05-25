@@ -4,7 +4,7 @@ library(dplyr)
 ## Define function to read instantaneous ts, aggregate to hourly
 hourlyAg <- function(fileName) {
 
-    data <- readRDS(paste0("rdata/", fileName))
+    data <- readRDS(paste0("USGS-Flow/rdsNew/", fileName))
 
     ## Set up seq
     hourSeq <- seq.POSIXt(min(data$dt), max(data$dt), by='1 hour')
@@ -13,16 +13,17 @@ hourlyAg <- function(fileName) {
     hourly <- data %>%
         group_by(Hourly = cut(dt, breaks=hourSeq)) %>%
         ##summarise(mean=mean(., na.rm=TRUE)
-        summarise_each(funs(mean=mean(., na.rm=T)))
+        ##summarise_each(funs(mean=mean(., na.rm=T)))
+        summarise_each(funs(mean=mean(cfs, na.rm=TRUE)))
 
     hourly2 <- data.frame(dt=as.POSIXct(hourly$Hourly),
                           cfs=hourly$cfs_mean)
 
-    saveRDS(hourly2, paste0("rdataHourly/hourly", fileName))
+    saveRDS(hourly2, paste0("USGS-Flow/rdsHourly2018/", fileName))
     ##return(hourly2)
 }
 
-flowFiles <- list.files(path="./rdata", pattern="rds")
+flowFiles <- list.files(path="USGS-Flow/rdsNew", pattern="rds")
 
 system.time({
     junk <- lapply(flowFiles, hourlyAg)
@@ -33,8 +34,10 @@ system.time({
 
 ## ## For now, individually call files.  Could file path /match
 ## ## ".rds hourly", or manually config a list for apply
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC14A.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC14AHourly.rds")
+hourlyFlow <- hourlyAg(readRDS("USGS-Flow/rdsNew/MC14A.rds"))
+
+
+saveRDS(hourlyFlow, "rdataHourly/MC14AHourly.rds")
 
 ## hourlyFlow <- hourlyAg(readRDS("rdata/MC17.rds"))
 ## saveRDS(hourlyFlow, "rdataHourly/MC17Hourly.rds")
