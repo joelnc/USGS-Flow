@@ -17,7 +17,7 @@ hourlyAg <- function(fileName) {
     ## dump to df and save
     hourly2 <- data.frame(dt=as.POSIXct(hourly$Hourly),
                           cfs=hourly$cfs_mean)
-    saveRDS(hourly2, paste0("USGS-Flow/rdsHourly2018/", fileName))
+    saveRDS(hourly2, paste0("USGS-Flow/rdsHourly/", fileName))
 }
 
 flowFiles <- list.files(path="USGS-Flow/rdsNew", pattern="rds")
