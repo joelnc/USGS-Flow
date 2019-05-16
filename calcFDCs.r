@@ -19,7 +19,7 @@ fdcStats <- function(site) {
     ## qData$rank <- seq(1,nrow(qData))
     ## qData$qiIV <- (1-(qData$rank/(nrow(qData)+1)))*100
 
-    res <- quantile(qData$cfs, probs=seq(.01,.99,.01))
+    res <- quantile(qData$cfs, probs=seq(.001,.999,.001))
 
 }
 
@@ -29,7 +29,7 @@ resultDF <- do.call("rbind", resres)
 
 ## Name results
 row.names(resultDF) <- flowSites
-colnames(resultDF) <- paste0(format(seq(.99,0.01,-.01),nsmall=2), "%")
+colnames(resultDF) <- paste0("qExc", format(seq(99.9,0.1,-0.1),trim=TRUE,nsmall=01))
 
 ## Save rds
 saveRDS(resultDF, "USGS-Flow/refFlowQuantiles.rds")
