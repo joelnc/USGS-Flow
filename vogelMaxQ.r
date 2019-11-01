@@ -4,20 +4,10 @@ graphics.off()
 library("dataRetrieval")
 source("globalFuns/logSpace.r")
 
-## for this one consider pulling full stage records, then counting threshold
-## exceedances rather than just looking at maxes.  Thresholds are stored in
-## mm <- readRDS("stageTrack/siteCoordsFloodStage.rds")
-
-## note hodgkins uses historical 1 in 5 and 2 per year thresholds, not fixed
-## flood stage
-
-## Note also, maybe look at outfall inverts near usgs gages to estimate how
-## many become submerged/tailwater affected at flood stage, half flood stage
-
-
 #############################################################################
 ## NWIS Input Stuff
-stageParameterCd <- "00065"
+QParameterCd <- "00060"
+StartDate <- "2007-10-01"
 
 ## Hard code lookups for usgs vs city codes
 usgsCodes <- data.frame(cityCode=c("Irwin1", "McAlpineSardis",
@@ -31,6 +21,32 @@ usgsCodes <- data.frame(cityCode=c("Irwin1", "McAlpineSardis",
 
 
 
+#############################################################################
+## Aberjona
+ds <- readNWISpeak(siteNumbers="01102500")
+ds$yr <- as.numeric(format(ds$peak_dt, "%Y"))
+ds$logQ <- log(ds$peak_va)
+ds$log10Q <- log10(ds$peak_va)
+ds<- ds[which(ds$yr<=2007),]
+
+## Plot, look at summary stats
+plot(ds$yr, ds$log10Q, ylim=c(1,10))
+plot(ds$yr, ds$peak_va, ylog=TRUE, ylim=c(10,10000))
+
+## matches usgs peak flow plot through nwis site
+plot(ds$yr, ds$peak_va, ylim=c(0,2000), col="blue",cex=1.2)
+
+## vogel fig
+plot(ds$yr, ds$peak_va, log="y", ylog=TRUE, axes=FALSE,
+     ylim=c(10,10000))
+axis(side=2, at=c(10,100,1000,10000), las=2)
+box()
+
+## Fit regressions to ln values
+lm1 <- lm(logQ~yr, data=ds)
+summary(lm1)
+lm1pred<- predict(lm1)
+lines(ds$yr, exp(lm1pred))
 
 #############################################################################
 xMin <- 1960
@@ -39,19 +55,11 @@ yMin <- 200
 yMax <- 30000
 titleLine <- 0.75
 
-## par(mfrow=c(4,2),mai=c(.5,1,.5,.25), yaxs="i")
+par(mfrow=c(4,2),mai=c(.5,1,.5,.25), yaxs="i")
 #############################################################################
-stDt <- as.Date("2012-01-01")
-## Little hope
-ds <- readNWISuv(siteNumbers=usgsCodes$usgsCode[8],
-                 parameterCd="00065") #,
-                 ## startDate=stDt)
-saveRDS(ds, "USGS-Flow/littleHopeStage.rds")
-
-## substet to peaks over threshold (9.48)
-ds2 <- ds[which(ds$X_00065_00000>=9.48),]
-
-
+## Irwin1, UP, 0.00347/0.0098 p/B
+ds <- readNWISpeak(siteNumbers=usgsCodes$usgsCode[1])
+ds$logQ <- log(ds$peak_va)
 
 ## Add water year column
 monthFinal <- as.numeric(format(tail(ds$peak_dt,1), "%m"))
@@ -282,5 +290,7 @@ lines(ds$wYr, exp(lm1pred), lwd=2)
 ## p vale and da
 da <- attr(ds, "siteInfo")$drain_area_va
 
+## get p value
+## put both on plots
 
 
