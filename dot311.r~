@@ -1,0 +1,66 @@
+library(dplyr)
+rm(list=ls())
+
+## go to loop, stormwater, cityworks swtp reports, request summary report, dropdown, csv
+
+ds <- read.csv("USGS-Flow/311.csv", header=TRUE, stringsAsFactors=FALSE)
+ds$DateIn <- as.Date(ds$DATETIMEINIT1, "%m/%d/%Y")
+ds$yr <- as.numeric(format(ds$DateIn, "%Y"))
+ds <- ds[ds$yr!=1979,]
+ds <- ds[ds$yr!=1953,]
+ds <- ds[ds$yr!=1909,]
+
+## Flooding related
+dsF <- ds %>%
+    filter(RequestType1 %in% c("Flooding","CDOT Flooding"))
+
+## Hist of flooding calls per year
+hist(dsF$yr)
+
+## hist of all calls per year
+dev.new()
+hist(ds$yr, breaks=seq(1992,2019))
+
+## proportion of calls as flooding
+dsFlood <- data.frame(yr=seq(1992, 2019), calls=rep(NA,28), fCalls=rep(NA,28),
+                  fProp=rep(NA, 28), stringsAsFactors=FALSE)
+
+for (i in 1:nrow(ds2)) {
+    dsFlood$calls[i] <- length(which(ds$yr==dsFlood$yr[i]))
+    dsFlood$fCalls[i] <- length(which(ds$RequestType1 %in% c("Flooding", "CDOT Flooding") &
+                                  ds$yr==dsFlood$yr[i]))
+}
+dsFlood$fProp <- dsFlood$fCalls/dsFlood$calls
+    
+plot(dsFlood$yr, dsFlood$fProp)
+
+## proportion of calls as flooding
+dsBlock <- data.frame(yr=seq(1992, 2019), calls=rep(NA,28), fCalls=rep(NA,28),
+                  fProp=rep(NA, 28), stringsAsFactors=FALSE)
+
+for (i in 1:nrow(ds2)) {
+    dsBlock$calls[i] <- length(which(ds$yr==dsBlock$yr[i]))
+    dsBlock$fCalls[i] <- length(which(ds$RequestType1=="Blockage" &
+                                  ds$yr==dsBlock$yr[i]))
+}
+dsBlock$fProp <- dsBlock$fCalls/dsBlock$calls
+dev.new()    
+plot(dsBlock$yr, dsBlock$fProp)
+
+
+## proportion of calls as erosion
+dsErosion <- data.frame(yr=seq(1992, 2019), calls=rep(NA,28), fCalls=rep(NA,28),
+                  fProp=rep(NA, 28), stringsAsFactors=FALSE)
+
+for (i in 1:nrow(ds2)) {
+    dsErosion$calls[i] <- length(which(ds$yr==dsErosion$yr[i]))
+    dsErosion$fCalls[i] <- length(which(ds$RequestType1=="Erosion" &
+                                  ds$yr==dsErosion$yr[i]))
+}
+dsErosion$fProp <- dsErosion$fCalls/dsErosion$calls
+dev.new()    
+plot(dsErosion$yr, dsErosion$fProp)
+
+
+
+
