@@ -30,6 +30,7 @@ usgsCodes <- data.frame(cityCode=c("MC14A", "MC17", "MC22A", "MC25",
 
 ## Read the list of .rds files in the .rdata folder
 flowFiles <- list.files(path="USGS-Flow/rdsArch", pattern="rds")
+flowFiles <- flowFiles[11:23]
 
 ## Function to load current file, nwis request new data, rbind and save
 updateFlow <- function(site) {
