@@ -1,3 +1,8 @@
+## File to load 15 data and aggregate to average hourly flow time series
+## For rainfall and modeling, I have assigned hourly values at center of
+## hour (on the 30 min mark including data from 0:00-0:59) but that is
+## not implemented here presently
+
 rm(list=ls())
 library(dplyr)
 
@@ -28,78 +33,3 @@ system.time({
 ##   user  system elapsed
 ## 155.47    1.20  156.78
 
-
-#############################################################################
-#############################################################################
-
-## ## For now, individually call files.  Could file path /match
-## ## ".rds hourly", or manually config a list for apply
-hourlyFlowBetter <- hourlyAg("MC14A.rds")
-
-
-saveRDS(hourlyFlow, "rdataHourly/MC14AHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC17.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC17Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC22A.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC22AHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC25.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC25Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC27.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC27Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC29A1.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC29A1Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC30A.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC30AHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC33.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC33Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC38.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC38Hourly.rds")
-
-## ## Fourmile ##
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC42.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC42Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC45.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC45Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC45B.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC45BHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC47A.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC47AHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC49A.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC49AHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC50.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC50Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC51.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC51Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MC66.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MC66Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MY11B.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MY11BHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MY12B.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MY12BHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MY13.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MY13Hourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MY13A.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MY13AHourly.rds")
-
-## hourlyFlow <- hourlyAg(readRDS("rdata/MY7B.rds"))
-## saveRDS(hourlyFlow, "rdataHourly/MY7BHourly.rds")
