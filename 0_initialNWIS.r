@@ -1,8 +1,8 @@
-## Making changes for the post IDA era....
+## Basic script to use dataRetrieval once per site to pull all avaialbe
+## flow data to populate the rdsArch folder.  Then for regular updates
+## only have to pull data from when this was last run and append (next script)
 
-## Going to see if I can just NWIS everything, then run updater and
-##  aggregator on new nwis files without further modificiaont..
-
+## Last run May 2018
 
 ######################### CLEAR STUFF #######################################
 rm(list=ls())
@@ -14,10 +14,10 @@ library("beepr")
 #############################################################################
 ######################### Sites DF  #########################################
 
-QParameterCd <- "00060"
-##StartDate <- "2007-10-01"
+QParameterCd <- "00060" ## Flow
 
-#################### MC14A Long Creek 214291555 ########################
+#############################################################################
+#################### MC14A Long Creek 214291555 #############################
 ## High res recent data
 siteNumber <- "0214291555"
 MC14ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
@@ -42,7 +42,8 @@ names(MC17NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC17NWIS, "USGS-Flow/rdsArch/MC17.rds")
 rm(MC17NWIS)
 
-#################### MC22A Irwin 02146300 ########################
+#############################################################################
+#################### MC22A Irwin 02146300 ###################################
 ## High res recent data
 siteNumber <- "02146300"
 MC22ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
@@ -67,7 +68,8 @@ names(MC25NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC25NWIS, "USGS-Flow/rdsArch/MC25.rds")
 rm(MC25NWIS)
 
-#################### MC27 Sugar Creek 02146381 ###########################
+#############################################################################
+#################### MC27 Sugar Creek 02146381 ##############################
 ## High res recent data
 siteNumber <- "02146381"
 MC27NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
@@ -105,6 +107,7 @@ names(MC30ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC30ANWIS, "USGS-Flow/rdsArch/MC30A.rds")
 rm(MC30ANWIS)
 
+#############################################################################
 #################### MC33 Briar 0214645022 ##################################
 ## High res recent data
 siteNumber <- "0214645022"
@@ -117,6 +120,7 @@ names(MC33NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC33NWIS, "USGS-Flow/rdsArch/MC33.rds")
 rm(MC33NWIS)
 
+#############################################################################
 #################### MC38 McAlpine Upper 02146600 (R) #######################
 ## High res recent data
 siteNumber <- "02146600"
@@ -143,7 +147,7 @@ names(MC40ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 
 saveRDS(MC40ANWIS, "USGS-Flow/rdsArch/MC40A.rds")
 rm(MC40ANWIS)
-
+#############################################################################
 #################### MC42 McMullen Lower 02146700 ###########################
 ## High res recent data
 siteNumber <- "02146700"
@@ -156,6 +160,7 @@ names(MC42NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC42NWIS, "USGS-Flow/rdsArch/MC42.rds")
 rm(MC42NWIS)
 
+#############################################################################
 #################### MC45 McAlpine Lower 02146750 ###########################
 ## High res recent data
 siteNumber <- "02146750"
@@ -168,7 +173,8 @@ names(MC45NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC45NWIS, "USGS-Flow/rdsArch/MC45.rds")
 rm(MC45NWIS)
 
-#################### MC45B McAlpine SC 0214676115 ########################
+#############################################################################
+#################### MC45B McAlpine SC 0214676115 ###########################
 ## High res recent data
 siteNumber <- "0214676115"
 MC45BNWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
@@ -180,7 +186,8 @@ names(MC45BNWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC45BNWIS, "USGS-Flow/rdsArch/MC45B.rds")
 rm(MC45BNWIS)
 
-#################### MC47A Steele 0214678175 ############################
+#############################################################################
+#################### MC47A Steele 0214678175 ################################
 ## High res recent data
 siteNumber <- "0214678175"
 MC47ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
@@ -192,7 +199,8 @@ names(MC47ANWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
 saveRDS(MC47ANWIS, "USGS-Flow/rdsArch/MC47A.rds")
 rm(MC47ANWIS)
 
-#################### MC49A LSC 02146530 ##################################
+#############################################################################
+#################### MC49A LSC 02146530 #####################################
 ## High res recent data
 siteNumber <- "02146530"
 MC49ANWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
@@ -231,7 +239,7 @@ saveRDS(MC51NWIS, "USGS-Flow/rdsArch/MC51.rds")
 rm(MC51NWIS)
 
 #############################################################################
-#################### MC66 Beaverdam 0214297160 #############################
+#################### MC66 Beaverdam 0214297160 ##############################
 siteNumber <- "0214297160"
 MC66NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
                        tz="America/New_York"); beep(8)
