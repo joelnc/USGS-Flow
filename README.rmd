@@ -1,4 +1,5 @@
 ## Charlotte USGS Flow Files
-This collection of scripts to pull USGS stream flow data, then to 
-update those files as needed, to aggregate the flows to hourly, and
-finally to calculate quantiles for flow duration curves.
+This is a collection of scripts to pull USGS stream flow data, then 
+update those files as needed, aggregate the flows to hourly, and
+finally to calculate quantiles for flow duration curves. z_ scripts
+are one-off analyses.
