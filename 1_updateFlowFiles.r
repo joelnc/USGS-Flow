@@ -1,7 +1,7 @@
 ## File to pull flow data from the newest data in rdsArch through present.
 ## Much quicker than pulling all data, and will overwrite provisional data
 ## with finalized data from end of last run.
-A
+
 ######################### CLEAR STUFF #######################################
 rm(list=ls())
 graphics.off()
