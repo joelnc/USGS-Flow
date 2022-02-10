@@ -213,6 +213,19 @@ saveRDS(MC49ANWIS, "USGS-Flow/rdsArch/MC49A.rds")
 rm(MC49ANWIS)
 
 #############################################################################
+#################### MC5 McTrib 0214265828 ##################################
+siteNumber <- "0214265828"
+MC5NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                       tz="America/New_York"); beep(8)
+
+MC5NWIS <- MC5NWIS[,1:6]
+names(MC5NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+saveRDS(MC5NWIS, "USGS-Flow/rdsArch/MC5.rds")
+rm(MC5NWIS)
+
+
+#############################################################################
 #################### MC50 Gar 0214266080 ####################################
 siteNumber <- "0214266080"
 MC50NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
