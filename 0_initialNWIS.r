@@ -9,12 +9,54 @@ rm(list=ls())
 graphics.off()
 library("EGRET")
 library("dataRetrieval")
-library("beepr")
+## library("beepr")
 
 #############################################################################
 ######################### Sites DF  #########################################
 
 QParameterCd <- "00060" ## Flow
+
+#############################################################################
+#################### 2022 County Sites Additions ############################
+
+## McDowell Creek (MC4)
+siteNumber <- "0214266000"
+MC4NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                        tz="America/New_York")
+
+MC4NWIS <- MC4NWIS[,1:6]
+names(MC4NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+saveRDS(MC4NWIS, "USGS-Flow/rdsArch/MC4.rds")
+rm(MC4NWIS)
+
+
+## W branch rock river (MY1B)
+siteNumber <- "0212393300"
+MY1BNWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                        tz="America/New_York")
+
+MY1BNWIS <- MY1BNWIS[,1:6]
+names(MY1BNWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+saveRDS(MY1BNWIS, "USGS-Flow/rdsArch/MY1B.rds")
+rm(MY1BNWIS)
+
+
+
+## Clear Creek (MY8)
+siteNumber <- "0212466000"
+MY8NWIS <- readNWISuv(siteNumbers=siteNumber, parameterCd=QParameterCd,
+                        tz="America/New_York")
+
+MY8NWIS <- MY8NWIS[,1:6]
+names(MY8NWIS) <- c("agency_cd", "site_no", "dt", "cfs", "cfsCd", "tz")
+
+saveRDS(MY8NWIS, "USGS-Flow/rdsArch/MY8.rds")
+rm(MY8NWIS)
+
+
+
 
 #############################################################################
 #################### MC14A Long Creek 214291555 #############################
