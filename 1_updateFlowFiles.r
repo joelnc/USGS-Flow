@@ -39,8 +39,8 @@ usgsCodes <- data.frame(cityCode=c("MC14A", "MC17", "MC22A", "MC25",
 flowFiles <- list.files(path="USGS-Flow/rdsArch", pattern="rds")
 
 ## MY8 only
-flowFiles <- flowFiles[27]
-usgsCodes <- usgsCodes[27,]
+## flowFiles <- flowFiles[27]
+## usgsCodes <- usgsCodes[27,]
 
 ## Function to load current file, nwis request new data, rbind and save
 ## NOTE: rdsArch is currently all data through 5/24/2018. So updateFlow
