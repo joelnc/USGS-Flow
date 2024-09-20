@@ -8,6 +8,9 @@ library(dplyr)
 
 ## Define function to read instantaneous ts, aggregate to hourly
 hourlyAg <- function(fileName) {
+
+    ## browser()
+    
     ## Read in data
     data <- readRDS(paste0("USGS-Flow/rdsNew/", fileName))
 
@@ -17,12 +20,20 @@ hourlyAg <- function(fileName) {
     ## Use dply to group by hour, compute mean
     hourly <- data %>%
         group_by(Hourly = cut(dt, breaks=hourSeq)) %>%
-        summarize(cfs_mean=mean(cfs, na.rm=TRUE))
+        summarize(cfs_mean=mean(cfs, na.rm=TRUE)) %>%
+        as.data.frame(stringsAsFactors=FALSE)
 
+    ## Fix factro issue
+    hourly$Hourly <- as.POSIXct(hourly$Hourly, "%Y-%d-%m %H:%M", tz="America/New_York")
+    
     ## dump to df and save
     hourly2 <- data.frame(dt=as.POSIXct(hourly$Hourly),
                           cfs=hourly$cfs_mean)
+
+    ## sort
+    hourly2 <- hourly2[order(hourly2$dt),]
     saveRDS(hourly2, paste0("USGS-Flow/rdsHourly/", fileName))
+    rm(hourly, hourly2, hourSeq, data)
 }
 
 flowFiles <- list.files(path="USGS-Flow/rdsNew", pattern="rds")
