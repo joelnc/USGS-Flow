@@ -73,3 +73,7 @@ system.time({
 ## took only ~1 minute to pull ~6 days worth of data.
 ## took  ~ 1.5 minute to pull ~17 days worth of data.
 
+## a couple of months but run on laptop
+## +    user  system elapsed 
+## 2261.07 3407.09 6333.92 
+
