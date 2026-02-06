@@ -25,7 +25,7 @@ fdcStats <- function(site) {
 }
 
 ## Apply fun
-resres <- lapply(X=flowSites, FUN=fdcStats)
+resres <- lapply(X=flowSites[1:27], FUN=fdcStats)
 resultDF <- as.data.frame(do.call("rbind", resres), stringsAsFactors=FALSE)
 
 names(resultDF)[1] <- "Site"

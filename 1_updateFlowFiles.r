@@ -77,3 +77,5 @@ system.time({
 ## +    user  system elapsed 
 ## 2261.07 3407.09 6333.92 
 
+## 12/5, a few months of data, 
+## 2 hours?
