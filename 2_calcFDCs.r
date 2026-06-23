@@ -13,7 +13,7 @@ listSites <- function(fileName) {
 flowSites <- unlist(lapply(X=flowFiles, FUN=listSites))
 
 fdcStats <- function(site) {
-
+    print(site)
     qData <- readRDS(
         paste0("USGS-Flow/rdsNew/", site,".rds"))
     res <- c(site, quantile(qData$cfs, probs=seq(.001,.999,.001)))
@@ -24,8 +24,9 @@ fdcStats <- function(site) {
     ## qData$qiIV <- (1-(qData$rank/(nrow(qData)+1)))*100
 }
 
-## Apply fun
+## Apply fun, weird crash on #8 MC33
 resres <- lapply(X=flowSites[1:27], FUN=fdcStats)
+
 resultDF <- as.data.frame(do.call("rbind", resres), stringsAsFactors=FALSE)
 
 names(resultDF)[1] <- "Site"
