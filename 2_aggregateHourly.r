@@ -3,6 +3,7 @@
 ## hour (on the 30 min mark including data from 0:00-0:59) but that is
 ## not implemented here presently
 
+## 2026 no changes expected.  Thhis does not pull data, merely aggregating what is on file
 
 rm(list=ls())
 library(dplyr)
@@ -39,7 +40,9 @@ hourlyAg <- function(fileName) {
     ## sort
     hourly2 <- hourly2[order(hourly2$dt),]
     saveRDS(hourly2, paste0("USGS-Flow/rdsHourly/", fileName))
+    print(paste("Saved:  ", fileName))
     rm(hourly, hourly2, hourSeq, data)
+    gc()
 }
 
 flowFiles <- list.files(path="USGS-Flow/rdsNew", pattern="rds")
@@ -47,32 +50,42 @@ flowFiles <- list.files(path="USGS-Flow/rdsNew", pattern="rds")
 system.time({
     junk <- lapply(flowFiles, hourlyAg)
 })
-##   user  system elapsed
-## 155.47    1.20  156.78
+
+ ##   user  system elapsed 
+ ## 270.14   11.64  386.56 
+
 
 #############################################################################
 ## Misc test plot
-mc14a <- readRDS("USGS-Flow/rdsHourly/MC14A.rds")
-my13 <- readRDS("USGS-Flow/rdsHourly/MY13.rds")
-my13a <- readRDS("USGS-Flow/rdsHourly/MY13A.rds")
+mc14ah <- readRDS("USGS-Flow/rdsHourly/MC14A.rds")
+my13h <- readRDS("USGS-Flow/rdsHourly/MY13.rds")
+my13ah <- readRDS("USGS-Flow/rdsHourly/MY13A.rds")
 
-mc14a <- mc14a %>%
+my13 <- readRDS("USGS-Flow/rdsNew/MY13.rds")
+
+
+## How about a basic plot? looks good!
+plot(tail(my13$dt,10000), tail(my13$cfs,10000), typ='l')
+lines(tail(my13h$dt,10000), tail(my13h$cfs,10000), typ='l', col="red")
+
+
+mc14ah <- mc14ah %>%
     filter(dt > as.POSIXct("2018-08-15 0:00"),
            dt < as.POSIXct("2019-10-11 0:00"))
 
-my13 <- my13 %>%
+my13h <- my13h %>%
     filter(dt > as.POSIXct("2018-08-15 0:00"),
            dt < as.POSIXct("2019-10-11 0:00"))
 
-my13a <- my13a %>%
+my13ah <- my13ah %>%
     filter(dt > as.POSIXct("2018-08-15 0:00"),
            dt < as.POSIXct("2019-10-11 0:00"))
 
 
 ## View final
 p14a <- plot_ly() %>%
-    add_trace(data=mc14a, x=~dt, y=~cfs, type="scatter", mode="lines") %>%
-    add_trace(data=my13, x=~dt, y=~cfs, type="scatter", mode="lines") %>%
-    add_trace(data=my13a, x=~dt, y=~cfs, type="scatter", mode="lines")
+    add_trace(data=mc14ah, x=~dt, y=~cfs, type="scatter", mode="lines") %>%
+    add_trace(data=my13h, x=~dt, y=~cfs, type="scatter", mode="lines") %>%
+    add_trace(data=my13ah, x=~dt, y=~cfs, type="scatter", mode="lines")
     
 p14a
